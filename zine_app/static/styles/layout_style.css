@@ -1,0 +1,46 @@
+
+
+
+
+* {
+    padding:0;
+    margin:0;
+    font-family: monospace;
+}
+
+
+
+.column_item {
+    border-bottom:1px solid lightblue;
+    background-color: rgba(255,255,255,0.4);
+    margin: 1rem;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+.viewport {
+    border: 1px solid black;
+
+}
+
+.paperback {
+    
+    background-image: url("./static_images/bg2.jpg");
+    background-size: cover;
+}
+
+.paperback_2 {
+    background-image: url("./static_images/background.jpg");
+}
+
+.submitter {
+    background-color: lightgray;
+}
+
+.user_image {
+    height: auto;
+    width:auto;
+    max-width: 100px;
+    max-height:100px;
+}

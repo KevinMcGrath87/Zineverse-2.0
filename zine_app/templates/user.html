@@ -1,0 +1,190 @@
+{% extends "user_layout.html" %}
+
+{% block col_user_zines %}
+    {% if session.id == profile_id %}
+        <div class = "row">
+            <div class = "col  px-5 py-5 column_item text-center rounded shadow ">
+                <h3>Start a new zine!</h3>
+                    {%with messages = get_flashed_messages()%}
+                    {%for message in messages%}
+                    <p>{{message}}</p>
+                    {%endfor%}
+                    {%endwith%}
+                    <form class = 'form d-flex flex-column' method = 'post' action = '/create_zine'>
+                        <input  class = "mt-2 form-control " type = "hidden" value = "{{user.id}}" name = "user">
+                        <input class =  "mt-2 form-control "  type = "text" value = "title" name = "title">
+                        <input  class = "mt-2 form-control " type = "text" value = "author" name = "author">
+                        <input  class = "mt-2 form-control " type = "text" value = "description" name = "description">
+                        <input  class = "mt-2 form-control submitter" type ="submit" value = "submit">
+                    </form>
+            </div>
+        </div>
+        <div class = "row">
+            <div class = 'col   px-5 py-5 column_item text-center rounded shadow'>
+                <h3>upload a page to a zine</h3>
+                <form class = 'form d-flex flex-column' method = "post" enctype="multipart/form-data" action = "/upload">
+                    <select class = "mt-2 form-control" name ="zine">
+                        <option value = "">select a zine to upload the page to</option>
+                            {%for zine in  user.getZines()%}
+                                <option name = "name" value = "{{zine.id}}">{{zine.title}}</option>
+                            {%endfor%}
+                    </select>
+                    <input class = "mt-2 form-control" type = "file" name = "file">
+                    <input class = "submitter mt-2 form-control" type = "submit" value ="submit">
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class = "row ">
+            <div class = 'col  px-5 py-5 column_item text-center rounded shadow'>
+                <h3>{{user.username}}'s uploaded zines</h3>
+                <table class ="table">
+                    <thead>
+                        <th>Title:</th>
+                        <th>Author:</th>
+                        <th>Pages:</th>
+                        <th>Description:</th>
+                        <th>Date Uploaded:</th>
+                        <th>Last Updated:</th>
+                        <th>Options:</th>
+                    </thead>
+                    <tbody>
+                        {% for zine in user.getZines() %}
+                            <tr>
+                                <td>{{zine.title}}</td>
+                                <td>{{zine.author}}</td>
+                                <td>{{zine.pages}}</td>
+                                <td>{{zine.description}}</td>
+                                <td>{{zine.created_at}}</td>
+                                <td>{{zine.updated_at}}</td>
+                                
+                                {% if session.id == profile_id %}
+                                <td class = >
+                                    <form action = "/view" method = "post">
+                                        <input name = "zine_id" type = "hidden" value ="{{zine.id}}">
+                                        <input class = 'btn btn-sm btn-outline-dark m-1' type = "submit" value = "view">
+                                    </form>
+                                    <form action = "/edit/{{zine.id}}" method ="get">
+                                        <input name = "zine_id" type = "hidden" value = {{zine.id}}>
+                                        <input class = 'btn btn-sm btn-outline-dark m-1' type ="submit" value = "edit">
+                                    </form>
+                                    <form action = "/delete/{{zine.id}}" method = post>
+                                        <input name = "zine_id" type = "hidden" value = "{{zine.id}}">
+                                        <input class = 'btn btn-sm btn-outline-dark  m-1' type = "submit" value = "delete">
+                                    </form>
+                                </td>
+                                {% else %}
+                                <td>
+                                    <form action = "/view" method = "post">
+                                        <input name = "zine_id" type = "hidden" value ="{{zine.id}}">
+                                        <input class = 'btn btn-sm btn-outline-dark m-1' type = "submit" value = "view">
+                                    </form>
+
+                                    <form action = "/collect" method ="post">
+                                        <select class = "mt-2 form-control" name ="collection_id">
+                                            <option value = "">select collection to add this zine to</option>
+                                                {%for collection in mainUser.getCollections()%}
+                                                    <option name = "collection_id" value = "{{collection.id}}">{{collection.collection_name}}</option>
+                                                {%endfor%}
+                                        </select>
+                                        <input name = "zine_id" type = "hidden" value = {{zine.id}}>
+                                        <button  class = 'btn btn-sm btn-outline-dark m-1' type ="submit">Collect</button>
+                                    </form>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+                
+        </div>
+        <div class = "row ">
+            <div class = 'col  px-5 py-5 column_item text-center rounded shadow'>
+                <h3>{{user.username}}'s Collections </h3>
+                <table class ="table">
+                    <thead>
+                        <th>Name of Collection:</th>
+                        <th>Zines in collection:</th>
+                    </thead>
+                    <tbody>
+                        {% for collection in user.getCollections() %}
+                            <tr>
+                                <td>{{collection.collection_name}}</td>
+                                <td>
+                                    <ul>
+                                    {% for collectedZine in collection.getZinesInCollection() %}
+                                        <li><a href = "">{{collectedZine.title}}</a></li>
+                                    {% endfor %}
+                                    </ul>
+                                </td>
+                                    
+                                
+                                {% if session.id == profile_id %}
+                                <td class = >
+                                    <form action = "/view" method = "post">
+                                        <input name = "collection_id" type = "hidden" value ="{{collection.id}}">
+                                        <input class = 'btn btn-sm btn-outline-dark m-1' type = "submit" value = "view">
+                                    </form>
+                                    <form action = "/edit/{{collection.id}}" method ="get">
+                                        <input name = "zine_id" type = "hidden" value = {{collection.id}}>
+                                        <input class = 'btn btn-sm btn-outline-dark m-1' type ="submit" value = "edit">
+                                    </form>
+                                    <form action = "/delete/{{collection.id}}" method = post>
+                                        <input name = "zine_id" type = "hidden" value = "{{collection.id}}">
+                                        <input class = 'btn btn-sm btn-outline-dark  m-1' type = "submit" value = "delete">
+                                    </form>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+                
+        </div>
+        {% endblock %}        
+
+        {% block col_user_social %}
+
+            <div class = 'row'>
+                <h3>friends:</h3>
+            <form action = '/viewprofile' method = 'post'>
+                <select name = 'id'>
+                    {% for friend in mainUser.getFriends() %}
+                        <option value = '{{friend.id}}'>{{friend.username}}</option>
+                    {% endfor %}    
+                </select>
+                <input type = 'submit' value = 'visit this users profile'>
+            </form>
+            </div>
+            <div class = 'row'>
+                <h3>Pending Requests:</h3>
+                <select>
+                    {% for friend in mainUser.pendingRequestsByUser() %}
+                        <option>{{friend.username}}</option>
+                    {% endfor %}    
+                </select>
+            </div>
+            <div class = 'row'>
+                <h3>Request Pending Approval:</h3>
+                {%if mainUser.requestsPendingUserApproval() %}
+                <form class = ' form' action = '/request_friendship/approve' method = 'post'>
+                    <select name = "user_id">
+                        {% for friend in mainUser.requestsPendingUserApproval() %}
+                            <option value = '{{friend.id}}'>{{friend.username}}</option>
+                        {% endfor %}    
+                    </select>
+                    <input class = 'form-control' type = 'hidden' value = '{{session.id}}' name = 'friend_id'>
+                    <input class = 'from-control' type = 'submit' value = 'approve'>
+                </form>
+                {% endif %}
+            </div>
+        {% endblock %}
+
+
+
+

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+
+
+
+{% block row_content %}
+<div class = "row align-items-center" >
+
+    <div class = "col-1 d-flex justify-content-center">
+        <form method = 'post' action = "/page_turn/{{page}}/{{pages|length}}/{{zine_id}}">
+            <input type = 'hidden' name = 'click' value ='left'>
+            <button type = 'submit' class = 'btn btn-outline-dark'>left</button>
+        </form>
+    </div>
+    <div class = "col column_item">
+        <div class = "row page h-auto">
+            <div class = "col viewport">
+                <div class = "">
+                    {% set address = '' %}
+                    {{pages[page]}}
+                    {% set address = 'zinelib' + '/' + filename + '/'  + pages[page] %}
+                    <img class = "img-fluid img-responsive " src = "{{url_for('static', filename = address)}}" alt = "no image displayed">
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class = "col-1 d-flex justify-content-center">
+            <form method = 'post' action = "/page_turn/{{page}}/{{pages|length}}/{{zine_id}}">
+                <input type = 'hidden' name = 'click' value ='right'>
+                <button class = 'btn btn-outline-dark'>right</button>
+            </form>
+        </div>
+
+</div>
+        <div class = "row info">
+            <div class = "col-12 d-flex space-around ">
+                <table class = "table">
+                    <thead>
+                        <tr >
+                            <th>
+                                author:
+                            </th>
+                            <th>
+                                title:
+                            </th>
+                            <th>
+                                pages:
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+
+{% endblock %}

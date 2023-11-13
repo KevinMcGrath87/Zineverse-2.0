@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+
+{%block head%}
+    {{super()}}
+{%endblock%}
+    {%block row_content %}
+    <div class = "user_info  col-md-3 gx-5 px-5 py-5  column_item rounded text-center shadow">
+        {%block col_user_info%}
+            <div class = "row user_header column_item ">
+                <div class = "col-4 border m-2 d-flex align-items-center justify-content-center">
+                    <img class = 'img-fluid user_image' src="{{url_for('static', filename='profile_images/generic_user.jpg')}}">
+                </div>
+                <div class = "col-8 text-start">
+                    <h3>
+                    username: {{user.username}}
+                    </h3>
+                </div>
+            </div>
+            <div class = "row user_info_list">
+                <div class = "col-12 d-flex">
+                    <ul class = "list-group">
+                        <li class = "list-group-item text-start">
+                            Birthday : {{user.dob}}
+                        </li>
+                        <li class = "list-group-item text-start">
+                            Account created on : {{user.created_at}}
+                        </li>
+                        <li class = "list-group-item text-start">
+                            User email: {{user.email}}
+                        </li>
+                        <li class = "list-group-item text-start">
+                            Zines uploaded : {{ user.getZines()|length }}
+                        </li>
+                        {% if profile_id != session['id'] %}
+                            <form class = 'form m-2' action = '/request_friendship' method = 'post'>
+                                <input name = 'user_id' type = 'hidden' value = '{{session.id}}'>
+                                <input name = 'friend_id' type = 'hidden' value = "{{profile_id}}">
+                                <input type = 'submit' value = 'send a friend request to {{user.username}}!'>
+                            </form>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+        {%endblock%}
+    </div>
+
+    <div class = "zine_list col-md-5 gx-5 px-5 py-5 column_item text-center rounded shadow">
+        {%block col_user_zines%}
+
+        {%endblock%}
+    </div>
+
+    <div class = "collections col-md-3 gx-5 px-5 py-5 column_item text-center rounded shadow">
+        {%block col_user_social%}
+        {%endblock%}
+    </div>
+    
+    {%endblock%}
+    
+    {%block row_footer%}
+    {{super()}}
+    <div class = "col-fluid column_item">
+        
+    </div>
+    {%endblock%}

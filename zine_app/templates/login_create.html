@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+
+
+{% block row_content %}
+    <div class = "col-md-5 create_user gx-5 px-5 py-5 column_item text-center rounded shadow">
+        <h3>Create a New User Account</h3>
+                {%with messages = get_flashed_messages()%}
+                {%for message in messages%}
+                <p>{{message}}</p>
+                {%endfor%}
+                {%endwith%}
+        <form class = ' form d-flex flex-column ' action = '/register' method = 'post'>
+            <label  class = "form-label" for = 'username'>Username:</label>
+            <input type = 'text' name = 'username'>
+            <label class = "form-label" for = 'email'>Email:</label>
+            <input type = 'text' name = 'email'>
+            <label class = "form-label" for = 'dob'>Date of birth:</label>
+            <input type = 'date' name = 'dob'>
+            <label class = "form-label" for = 'password'>Password:</label>
+            <input type = 'password' name ='password'>
+            <label class = "form-label" for = 'confirm_password'>Confirm Password:</label>
+            <input type = 'password' name ='confirm_password'>
+            <input type = 'submit' class = "submitter btn shadow btn-outline-dark mt-2">
+        </form>
+    </div>
+
+    <div class= " col-md-5 login gx-5 px-5 py-5 column_item text-center rounded shadow">
+            <h3 class = 'd-flex'>login</h3>
+            {%with messages = get_flashed_messages()%}
+                    {%for message in messages%}
+                    <p>{{message}}</p>
+                    {%endfor%}
+                    {%endwith%}
+            <form class = 'loginForm d-flex flex-column' action = '/login' method = 'post'>
+                <label class = "form-label" for = 'email'>Email:</label>
+                <input type = 'text' name = 'email'>
+                <label class = "form-label" for = 'password'>Password:</label>
+                <input type = 'password' name ='password'>
+                <input type = 'submit' class = "submitter btn shadow btn-outline-dark mt-2 ">
+            </form>
+    </div>
+
+
+{% endblock %}

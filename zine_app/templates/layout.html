@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%block head%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel = "stylesheet" type = "text/css" href = "{{url_for('static', filename = 'styles/layout_style.css')}}" >
+    <title>
+        {%block title%}
+        {% endblock %}
+    </title>
+    {%endblock%}
+</head>
+
+
+<body>
+    {%block body%}
+    <div class = "container-fluid body paperback_2">
+        {%block container_body%}
+            <div class = "row navbar bg-body-tertiary shadow paperback"> 
+                {%block row_navbar%}
+                <div class = "row title py-2 px-5 ">
+                    <div class = col>
+                        <h1 class = "title ms-4">ZINEVERSE</h1>
+                    </div>
+                </div>
+                <div class = "row  links">
+
+                    <div class = "col d-flex justify-content-center search   ">
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-dark" type="submit">Search</button>
+                        </form>
+                    </div>
+                    {% if not session.id %}
+                    <div class = "col border d-flex bg-light justify-content-center align-items-center me-2  rounded  ">
+                        <a href = "login_create">Login or create a user account</a>
+                    </div>
+                    {% else %}
+                    <div class = "col border d-flex bg-light justify-content-center align-items-center me-2 rounded  ">
+                        <a href = "/logout">Logout</a>
+                    </div>
+                    {% endif %}
+                    {% if session.id %}
+                    <div class = " col border d-flex bg-light justify-content-center align-items-center me-2 rounded  ">
+                        <a href = "/user/{{session.id}}">Home</a>
+                    </div>
+                    {% endif %}
+                    <div class = "col border d-flex bg-light justify-content-center align-items-center me-2 rounded  ">
+                        <a href = "">About</a>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+            
+            <div class = "row  h-100 content m-3 space-around justify-content-evenly">
+                {%block row_content%}
+                {%endblock%}
+            </div>
+            
+            <div class = "row footer">
+                {%block row_footer%}
+                {%endblock%}
+            </div>
+        {%endblock%}
+        
+    </div>
+    {%endblock%}
+{% block javascript %}
+    <script src = "{{url_for('static', filename = '/scripts/script.js')}}">
+</script>
+{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
